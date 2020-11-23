@@ -2,8 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Benday.VsliveVirtual.WebUi.Security;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +28,39 @@ namespace Benday.VsliveVirtual.WebUi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            ConfigureSecurity(services);
+        }
+
+        private void ConfigureSecurity(IServiceCollection services)
+        {
+            ConfigureAuthentication(services);
+            ConfigureAuthorization(services);
+        }
+
+        private void ConfigureAuthentication(IServiceCollection services)
+        {
+            services.AddAuthentication(
+                CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(options =>
+                    {
+                        options.LoginPath = new PathString("/Security/Login");
+                        options.LogoutPath = new PathString("/Security/Logout");
+                    });
+        }
+
+        private void ConfigureAuthorization(IServiceCollection services)
+        {
+            services.AddSingleton<IAuthorizationHandler, LoggedInUsingEasyAuthHandler>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(SecurityConstants.Policy_LoggedInUsingEasyAuth,
+                                policy => policy.Requirements.Add(
+                                    new LoggedInUsingEasyAuthRequirement()));
+
+                options.DefaultPolicy = options.GetPolicy(SecurityConstants.Policy_LoggedInUsingEasyAuth);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
