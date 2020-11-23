@@ -30,7 +30,7 @@ jobs:
     - name: Set version message in appsettings.json
       uses: benday-inc/set-property-value-in-appsettings@main
       with:
-        pathtosettingsfile: ''${{ github.workspace }}/published/appsettings.json'
+        pathtosettingsfile: '${{ github.workspace }}/published/appsettings.json'
         keyname1: 'VersionMessage'
         valuetoset: '${{ github.head_commit.url}}'
     - name: 'Run Azure webapp deploy action using publish profile credentials'
