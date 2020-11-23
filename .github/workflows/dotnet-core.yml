@@ -33,7 +33,7 @@ jobs:
       with:
         pathtosettingsfile: '${{ github.workspace }}/published/appsettings.json'
         keyname1: 'VersionMessage'
-        valuetoset: '${{ env.GITHUB_WORKFLOW }} ${{ env.GITHUB_RUN_ID}} ${{ env.GITHUB_SHA }}'
+        valuetoset: '$GITHUB_WORKFLOW $GITHUB_RUN_ID $GITHUB_SHA'
     - name: 'Run Azure webapp deploy action using publish profile credentials'
       uses: azure/webapps-deploy@v2
       with: 
