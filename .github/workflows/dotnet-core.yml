@@ -1,9 +1,5 @@
 name: .NET Core
 
-defaults:
-  run:
-    working-directory: "Benday.VsliveVirtual"
-
 on:
   workflow_dispatch:
   push:
