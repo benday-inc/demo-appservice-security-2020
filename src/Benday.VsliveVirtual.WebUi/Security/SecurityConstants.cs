@@ -10,5 +10,4 @@ namespace Benday.VsliveVirtual.WebUi.Security
 
         public const string Idp_DevelopmentMode = "DevelopmentMode";
     }
-
 }

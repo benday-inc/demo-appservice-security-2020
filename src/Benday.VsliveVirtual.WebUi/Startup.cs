@@ -34,6 +34,8 @@ namespace Benday.VsliveVirtual.WebUi
 
         private void ConfigureSecurity(IServiceCollection services)
         {
+            services.AddTransient<ISecurityConfiguration, SecurityConfiguration>();
+            
             ConfigureAuthentication(services);
             ConfigureAuthorization(services);
         }
